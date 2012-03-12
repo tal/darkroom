@@ -4,8 +4,8 @@ require File.expand_path('../lib/darkroom/version', __FILE__)
 Gem::Specification.new do |gem|
   gem.authors       = ["Tal Atlas"]
   gem.email         = ["me@tal.by"]
-  gem.description   = %q{TODO: Write a gem description}
-  gem.summary       = %q{TODO: Write a gem summary}
+  gem.description   = %q{Gem for processing images and uploading to S3}
+  gem.summary       = %q{Gem for processing images and uploading to S3}
   gem.homepage      = ""
 
   gem.executables   = `git ls-files -- bin/*`.split("\n").map{ |f| File.basename(f) }
