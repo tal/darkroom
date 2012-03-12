@@ -1,6 +1,6 @@
 require "darkroom/version"
 require 'aws-sdk'
-require 'rmagick'
+require 'RMagick'
 
 module Darkroom
   module Plugins; end
