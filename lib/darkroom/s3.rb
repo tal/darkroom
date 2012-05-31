@@ -32,10 +32,11 @@ module Darkroom::Plugins::S3
 
         @__s3_bucket ||= begin
           name = name.to_s
-          s3 = image_attributes[:s3]
+          s3 = Darkroom::Plugins::S3.s3
           # TODO: Cache all s3 buckets
+          # TODO: Create all buckets on load
           bucket = s3.buckets.find {|b| b.name == name}
-          # bucket ||= s3.buckets.create(name)
+          bucket ||= s3.buckets.create(name)
           bucket
         end
 
@@ -129,8 +130,10 @@ module Darkroom::Plugins::S3
   def self.included(receiver)
     receiver.extend         ClassMethods
     receiver.send :include, InstanceMethods
+  end
 
-    receiver.image_attributes[:s3] = AWS::S3.new
+  def self.s3
+    @s3 ||= AWS::S3.new
   end
 end
 
