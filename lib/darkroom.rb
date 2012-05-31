@@ -15,8 +15,13 @@ module Darkroom
   module ClassMethods
     attr_reader :image_attributes
   end
-  
+
   module InstanceMethods
+
+    def image?
+      !original_meta.empty? if original_meta
+    end
+
     def image= file
       filename = if file.respond_to? :original_filename
         file.original_filename
