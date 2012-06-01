@@ -22,6 +22,10 @@ module Darkroom
       !original_meta.empty? if original_meta
     end
 
+    def image_changed?
+      !!@original_image
+    end
+
     def image= file
       filename = if file.respond_to? :original_filename
         file.original_filename

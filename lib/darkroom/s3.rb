@@ -4,6 +4,7 @@ AWS::Core::Configuration.module_eval do
 end
 
 module Darkroom::Plugins::S3
+  class InvalidUploadPath < ArgumentError; end
   module ClassMethods
     def upload_path path=nil
       if m = /^(?:(.+?)@)?\/?(.+)$/.match(path)
@@ -13,7 +14,7 @@ module Darkroom::Plugins::S3
       elsif path.nil?
         image_attributes[:upload_path]
       else
-        raise ArgumentError, 'must pass a uable string to ::upload_path'
+        raise InvalidUploadPath, 'must pass a uable string to ::upload_path'
       end
     end
 
@@ -87,13 +88,11 @@ module Darkroom::Plugins::S3
     end
 
     def download_original_image
-      Magick::Image.from_blob(s3_url(style: 'original').get).first
+      Magick::Image.from_blob(URL.new(s3_url(style: 'original')).get).first
     end
 
     def s3_url opts={}
-      url = 'http://'<<self.class.s3_bucket.name<<'.s3.amazonaws.com'<<path(opts)
-      u = URL.new(url)
-      u
+      'http://'<<self.class.s3_bucket.name<<'.s3.amazonaws.com'<<path(opts)
     end
 
     def s3_objs
