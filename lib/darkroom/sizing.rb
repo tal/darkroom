@@ -15,7 +15,7 @@ module Darkroom
     module InstanceMethods
 
       def path args = {}
-        raise NoImage if image?
+        raise NoImage unless image?
         file_name = original_meta['name']
         image_attributes[:upload_path].gsub(/(?::(\w+))/) do |key|
           case $1
