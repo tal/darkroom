@@ -55,6 +55,12 @@ module Darkroom
       @original_image
     end
 
+    def image_size_ratio
+      return unless original_meta && (y = original_meta['geometry_y']) && (x = original_meta['geometry_x'])
+
+      x.to_f/y.to_f
+    end
+
     def image_attributes
       self.class.image_attributes
     end
