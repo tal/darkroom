@@ -37,7 +37,7 @@ module Darkroom
         file = file.tempfile.path
       end
 
-      @original_image = Magick::Image.read(file).first
+      @original_image = Magick::Image.read(file).first.auto_orient
 
       if shot_at = @original_image.get_exif_by_entry('DateTimeOriginal').first[1]
         m = shot_at.match(/(\d{4}):(\d\d):(\d\d) (\d\d):(\d\d):(\d\d)/)
