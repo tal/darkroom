@@ -43,7 +43,7 @@ module Darkroom
           end
           original_image
         elsif style = image_attributes[:styles][name]
-          if m = style.match(/(\d+)x(\d+)#/)
+          if m = style.match(/(\d+)x(\d+)[#s]/)
             x = m[1].to_i
             y = m[2].to_i
             original_image.resize_to_fill(x, y)
