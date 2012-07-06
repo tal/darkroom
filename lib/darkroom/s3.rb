@@ -73,12 +73,14 @@ module Darkroom::Plugins::S3
 
     def upload what=:new
       to_upload = case what
+      when Array
+        what
       when :original
         ['original']
       when :all
         ['original']+image_attributes[:styles].keys
       when :new
-        not_uploaded
+        not_uploaded-['original']
       end
 
       to_upload.each do |name|

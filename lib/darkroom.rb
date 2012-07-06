@@ -23,7 +23,7 @@ module Darkroom
     end
 
     def image_changed?
-      !!@original_image
+      @image_set
     end
 
     def image= file
@@ -37,6 +37,7 @@ module Darkroom
         file = file.tempfile.path
       end
 
+      @image_set = true
       @original_image = Magick::Image.read(file).first.auto_orient
 
       if shot_at = @original_image.get_exif_by_entry('DateTimeOriginal').first[1]
