@@ -27,18 +27,24 @@ module Darkroom
     end
 
     def image= file
-      filename = if file.respond_to? :original_filename
-        file.original_filename
-      else
-        File.basename(file)
-      end
 
-      if file.respond_to? :tempfile
-        file = file.tempfile.path
+      if file =~ /^https?:\/\//
+        @original_image = Magick::Image.from_blob(open(file).read).first.auto_orient
+      else
+        filename = if file.respond_to? :original_filename
+          file.original_filename
+        else
+          File.basename(file)
+        end
+
+        if file.respond_to? :tempfile
+          file = file.tempfile.path
+        end
+
+        @original_image = Magick::Image.read(file).first.auto_orient
       end
 
       @image_set = true
-      @original_image = Magick::Image.read(file).first.auto_orient
 
       if shot_at = @original_image.get_exif_by_entry('DateTimeOriginal').first[1]
         m = shot_at.match(/(\d{4}):(\d\d):(\d\d) (\d\d):(\d\d):(\d\d)/)
