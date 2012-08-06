@@ -28,7 +28,7 @@ module Darkroom
 
     def image= file
 
-      if file =~ /^https?:\/\//
+      if file.is_a? String and file =~ /^https?:\/\//
         @original_image = Magick::Image.from_blob(open(file).read).first.auto_orient
       else
         filename = if file.respond_to? :original_filename
