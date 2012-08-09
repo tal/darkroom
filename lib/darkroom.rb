@@ -30,6 +30,8 @@ module Darkroom
 
       if file.is_a? String and file =~ /^https?:\/\//
         @original_image = Magick::Image.from_blob(open(file).read).first.auto_orient
+        url = URL.new(file)
+        filename = "#{url.domain}.#{@original_image.mime_type[/\/(.+)/,1]}"
       else
         filename = if file.respond_to? :original_filename
           file.original_filename
