@@ -35,6 +35,10 @@ module Darkroom
         end
       end
 
+      def styles
+        upload_info.keys
+      end
+
       private
       def style_image name
         if name == 'original'
