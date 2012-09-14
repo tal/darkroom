@@ -10,6 +10,12 @@ module Darkroom
         image_attributes[:styles]
       end
 
+      def build_path args={}
+        image_attributes[:upload_path].gsub(/(?::(\w+))/) do |key|
+          args[$1]||args[$1.to_sym]||key
+        end
+      end
+
     end
 
     module InstanceMethods

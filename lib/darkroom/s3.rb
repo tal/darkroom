@@ -51,6 +51,10 @@ module Darkroom::Plugins::S3
         image_attributes[:s3_bucket_name] = bucket
       end
     end
+
+    def build_url args={}
+      'http://'<<self.s3_bucket.name<<'.s3.amazonaws.com'<<build_path(opts)
+    end
   end
 
   module InstanceMethods
