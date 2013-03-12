@@ -121,8 +121,11 @@ module Darkroom::Plugins::S3
     def upload_image name, img
       obj = s3_objs[name]
 
+      reduced_redundancy = name.to_s != 'original'
+
       s3 = obj.write :data => img.to_blob,
                 :acl => self.class.s3_acl,
+                :reduced_redundancy => reduced_redundancy,
                 :content_type => img.mime_type
 
       self.upload_info[name]||={}
