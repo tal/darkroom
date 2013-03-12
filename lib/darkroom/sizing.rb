@@ -45,6 +45,10 @@ module Darkroom
         upload_info.keys
       end
 
+      def cleanup_active_images
+        active_images.each {|img| img.destroy!}
+      end
+
       private
       def style_image name
         if name == 'original'
@@ -75,10 +79,6 @@ module Darkroom
 
       def active_images
         @active_images ||=[]
-      end
-
-      def cleanup_active_images
-        active_images.each {|img| img.destroy!}
       end
     end
 
