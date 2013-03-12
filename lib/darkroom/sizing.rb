@@ -56,13 +56,29 @@ module Darkroom
           if m = style.match(/(\d+)x(\d+)[#s]/)
             x = m[1].to_i
             y = m[2].to_i
-            original_image.resize_to_fill(x, y)
+            img = original_image.resize_to_fill(x, y)
+            new_active_image(img)
           else
-            original_image.change_geometry(style) do |cols, rows, _img|
+            img = original_image.change_geometry(style) do |cols, rows, _img|
               _img.resize(cols, rows)
             end
+
+            new_active_image(img)
           end
         end
+      end
+
+      def new_active_image img
+        active_images << img
+        img
+      end
+
+      def active_images
+        @active_images ||=[]
+      end
+
+      def cleanup_active_images
+        active_images.each {|img| img.destroy!}
       end
     end
 

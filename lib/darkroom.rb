@@ -46,6 +46,8 @@ module Darkroom
         @original_image = Magick::Image.read(file).first.auto_orient
       end
 
+      new_active_image(@original_image)
+
       @image_set = true
 
       if shot_at = @original_image.get_exif_by_entry('DateTimeOriginal').first[1]

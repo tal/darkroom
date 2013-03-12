@@ -94,7 +94,7 @@ module Darkroom::Plugins::S3
     end
 
     def download_original_image
-      Magick::Image.from_blob(URL.new(s3_url(style: 'original')).get).first
+      new_active_image(Magick::Image.from_blob(URL.new(s3_url(style: 'original')).get).first)
     end
 
     def s3_url opts={}
