@@ -123,10 +123,14 @@ module Darkroom::Plugins::S3
 
       reduced_redundancy = name.to_s != 'original'
 
-      s3 = obj.write :data => img.to_blob,
-                :acl => self.class.s3_acl,
-                :reduced_redundancy => reduced_redundancy,
-                :content_type => img.mime_type
+      if image_attributes[:format]
+        img.format = image_attributes[:format]
+      end
+
+      s3 = obj.write data: img.to_blob,
+                      acl: self.class.s3_acl,
+       reduced_redundancy: reduced_redundancy,
+             content_type: img.mime_type
 
       self.upload_info[name]||={}
       self.upload_info[name]['uploaded_at'] = Time.now

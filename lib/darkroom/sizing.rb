@@ -10,6 +10,10 @@ module Darkroom
         image_attributes[:styles]
       end
 
+      def format name
+        image_attributes[:format] = name
+      end
+
       def build_path args={}
         image_attributes[:upload_path].gsub(/(?::(\w+))/) do |key|
           args[$1]||args[$1.to_sym]||key
@@ -26,7 +30,11 @@ module Darkroom
         image_attributes[:upload_path].gsub(/(?::(\w+))/) do |key|
           case $1
           when 'extension'
-            File.extname(file_name)[1..-1] # extname includes the dot
+            if image_attributes[:format]
+              image_attributes[:format]
+            else
+              File.extname(file_name)[1..-1] # extname includes the dot
+            end
           when 'base'
             File.basename(file_name).sub(File.extname(file_name),'')
           when 'filename'
@@ -55,21 +63,22 @@ module Darkroom
           unless @original_image
             Rails.logger.error("re-uploading original image") # TODO: add specific info
           end
-          original_image
+          img = original_image
         elsif style = image_attributes[:styles][name]
           if m = style.match(/(\d+)x(\d+)[#s]/)
             x = m[1].to_i
             y = m[2].to_i
             img = original_image.resize_to_fill(x, y)
-            new_active_image(img)
           else
             img = original_image.change_geometry(style) do |cols, rows, _img|
               _img.resize(cols, rows)
             end
-
-            new_active_image(img)
           end
+
+          img.format = image_attributes[:format] if image_attributes[:format]
         end
+
+        new_active_image(img)
       end
 
       def new_active_image img
