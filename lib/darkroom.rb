@@ -1,6 +1,8 @@
 require "darkroom/version"
 require 'aws-sdk'
 require 'RMagick'
+require 'open-uri'
+require 'url'
 
 module Darkroom
   module Plugins; end
@@ -60,7 +62,8 @@ module Darkroom
         'geometry_x' => @original_image.columns,
         'geometry_y' => @original_image.rows,
         'size' => @original_image.filesize,
-        'name' => filename
+        'name' => filename,
+        'avg_color' => Darkroom.average_image_color(@original_image)
       }
 
       @original_image
@@ -75,6 +78,23 @@ module Darkroom
     def image_attributes
       self.class.image_attributes
     end
+  end
+
+  def self.average_image_color img
+    total = 0
+    avg   = { 'r' => 0.0, 'g' => 0.0, 'b' => 0.0 }
+    img.quantize.color_histogram.each { |c, n|
+        avg['r'] += n * c.red
+        avg['g'] += n * c.green
+        avg['b'] += n * c.blue
+        total   += n
+    }
+    %w{r g b}.each do |comp|
+      avg[comp] /= total
+      avg[comp] = (avg[comp] / Magick::QuantumRange * 255).to_i
+    end
+
+    avg
   end
 
   def self.included(receiver)

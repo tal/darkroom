@@ -7,7 +7,7 @@
 
 require File.expand_path('../../lib/darkroom', __FILE__)
 
-AWS.config(YAML.load_file(File.expand_path('../../config/aws.yml',__FILE__)))
+# AWS.config(YAML.load_file(File.expand_path('../../config/aws.yml',__FILE__)))
 
 RSpec.configure do |config|
   config.treat_symbols_as_metadata_keys_with_true_values = true

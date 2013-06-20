@@ -20,13 +20,13 @@ describe Darkroom do
 
     it "should accept a path" do
       obj.image = 'test_images/testimg.jpg'
-      obj.original_meta.should include("mime_type"=>"image/jpeg", "geometry_x"=>200, "geometry_y"=>300)
+      obj.original_meta.should include("mime_type"=>"image/jpeg", "geometry_x"=>200, "geometry_y"=>300, "avg_color" => {"r"=>104, "g"=>88, "b"=>75})
     end
 
     it "should accept a file" do
       File.open('test_images/testimg.jpg') do |file|
         obj.image = file
-        obj.original_meta.should include("mime_type"=>"image/jpeg", "geometry_x"=>200, "geometry_y"=>300)
+        obj.original_meta.should include("mime_type"=>"image/jpeg", "geometry_x"=>200, "geometry_y"=>300, "avg_color" => {"r"=>104, "g"=>88, "b"=>75})
       end
     end
 

@@ -58,6 +58,7 @@ module Darkroom
       end
 
       private
+
       def style_image name
         if name == 'original'
           unless @original_image
