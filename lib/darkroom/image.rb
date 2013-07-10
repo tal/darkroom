@@ -13,7 +13,7 @@ module Darkroom
 
         @filename = if file.is_a? String and file =~ /^https?:\/\//
           url = URL.new(file)
-          "#{url.domain}.#{@original_image.mime_type[/\/(.+)/,1]}"
+          "#{url.domain}.#{format}"
         else
           if file.respond_to? :original_filename
             file.original_filename
@@ -21,6 +21,8 @@ module Darkroom
             File.basename(file)
           end
         end
+
+        file_info['name'] = @filename
       end
     end
 
@@ -48,12 +50,12 @@ module Darkroom
     end
 
     def width
-      file_info['width']
+      file_info['geometry_x']
     end
     alias columns width
 
     def height
-      file_info['height']
+      file_info['geometry_y']
     end
     alias rows height
 
@@ -78,12 +80,15 @@ module Darkroom
       @info ||= begin
         raw = img["%m|%w|%h|%[EXIF:DateTimeOriginal]"]
         @format,@width,@height,shot_at = raw.split('|')
+        @width = @width.to_i
+        @height = @height.to_i
         @format = @format.downcase
         @shot_at = Time.utc(*shot_at.split(/:|\s+/)) rescue nil
         {
             'format' => @format,
-             'width' => @width,
-            'height' => @height,
+         'mime_type' => "image/#{@format}",
+        'geometry_x' => @width,
+        'geometry_y' => @height,
            'shot_at' => @shot_at,
               'name' => @filename,
               'size' => filesize
