@@ -3,7 +3,7 @@ module Darkroom
     attr_reader :geometry
     def initialize parent, geometry, format=nil
       @geometry = geometry
-      @convert_to_format = foramt
+      @convert_to_format = format
       parent.instance_variables.each do |var|
         next if var == :@img
         instance_variable_set(var,parent.instance_variable_get(var))
