@@ -21,7 +21,7 @@ module Darkroom
     end
 
     def is_cropped?
-      @is_cropped ||= geometry.match(/(?<x>\d+)x(?<y>\d+)[#s]/)
+      geometry.match(/(?<x>\d+)x(?<y>\d+)[#s]/)
     end
 
     def inspect_opts
