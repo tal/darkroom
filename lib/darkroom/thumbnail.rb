@@ -24,14 +24,24 @@ module Darkroom
       @is_cropped ||= geometry.match(/(?<x>\d+)x(?<y>\d+)[#s]/)
     end
 
+    def inspect_opts
+      opts = super
+      opts << "geometry: #{geometry}"
+      opts << 'processed' if @processed
+      opts
+    end
+
     private
     def process
       if match = is_cropped?
         resize_to_fill(match[:x],match[:y])
       else
         img.thumbnail(geometry)
-        img.format @convert_to_format if @convert_to_format
       end
+
+      img.format @convert_to_format if @convert_to_format
+
+      @processed = true
     end
 
     # def resize_to_fill!(ncols, nrows=nil, gravity=CenterGravity)
@@ -54,8 +64,6 @@ module Darkroom
         c.gravity "center"
         c.crop "#{ncols}x#{nrows}+0+0"
       end
-
-      img.format @convert_to_format if @convert_to_format
     end
   end
 end

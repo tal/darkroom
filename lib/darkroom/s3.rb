@@ -125,8 +125,10 @@ module Darkroom::Plugins::S3
 
       reduced_redundancy = name.to_s != 'original'
 
+      acl = self.class.s3_acl
+
       s3 = obj.write file: img.path,
-                      acl: self.class.s3_acl,
+                      acl: acl,
        reduced_redundancy: reduced_redundancy,
              content_type: img.mime_type
 

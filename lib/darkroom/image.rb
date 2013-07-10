@@ -112,5 +112,17 @@ module Darkroom
     def aspect_ratio
       width.to_f/height.to_f
     end
+
+    def inspect_opts
+      opts = [self.class.to_s]
+      opts << filename
+      opts << "#{width}x#{height}"
+      opts << "thumbnails: #{thumbnails.collect(&:geometry)}" unless is_a?(Thumbnail)
+      opts
+    end
+
+    def inspect
+      "#<#{inspect_opts.join(' ')}>"
+    end
   end
 end
