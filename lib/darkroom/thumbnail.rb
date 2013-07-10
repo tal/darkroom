@@ -29,10 +29,8 @@ module Darkroom
       if match = is_cropped?
         resize_to_fill(match[:x],match[:y])
       else
-        img.combine_options do |c|
-          c.thumbnail(geometry)
-          c.format @convert_to_format if @convert_to_format
-        end
+        img.thumbnail(geometry)
+        img.format @convert_to_format if @convert_to_format
       end
     end
 
@@ -55,8 +53,9 @@ module Darkroom
         c.thumbnail "#{scale*columns+0.5}x#{scale*rows+0.5}"
         c.gravity "center"
         c.crop "#{ncols}x#{nrows}+0+0"
-        c.format @convert_to_format if @convert_to_format
       end
+
+      img.format @convert_to_format if @convert_to_format
     end
   end
 end
