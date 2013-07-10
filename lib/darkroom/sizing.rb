@@ -64,9 +64,12 @@ module Darkroom
           unless @original_image
             Rails.logger.error("re-uploading original image") # TODO: add specific info
           end
-          img = original_image
+          original_image
         elsif style = image_attributes[:styles][name]
-          img = original_image.new_thumbnail style, image_attributes[:format]
+          @style_image ||= Hash.new do |h,k|
+            h[k] = original_image.new_thumbnail style, image_attributes[:format]
+          end
+          @style_image[style]
         end
       end
     end

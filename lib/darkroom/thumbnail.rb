@@ -57,10 +57,10 @@ module Darkroom
     def resize_to_fill ncols, nrows=nil
       nrows ||= ncols
       scale = [ncols.to_f/columns.to_f, nrows.to_f/rows.to_f].max
-      return if scale = 1.0
+      return if scale == 1.0
 
       img.combine_options do |c|
-        c.thumbnail "#{scale*columns+0.5}x#{scale*rows+0.5}"
+        c.thumbnail "#{scale*th.columns+0.5}x#{scale*th.rows+0.5}"
         c.gravity "center"
         c.crop "#{ncols}x#{nrows}+0+0"
       end
