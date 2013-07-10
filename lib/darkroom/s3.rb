@@ -94,7 +94,7 @@ module Darkroom::Plugins::S3
     end
 
     def download_original_image
-      img = Image.new(s3_url(style: 'original'))
+      img = ::Darkroom::Image.new(s3_url(style: 'original'))
       img.file_info = original_meta
       img
     end
