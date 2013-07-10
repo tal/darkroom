@@ -39,6 +39,10 @@ module Darkroom
       new_obj
     end
 
+    def path
+      img.path
+    end
+
     def to_blob
       img.to_blob
     end
