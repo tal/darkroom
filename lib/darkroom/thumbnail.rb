@@ -48,7 +48,7 @@ module Darkroom
 
     def resize_to_fill ncols, nrows=nil
       nrows ||= ncols
-      scale = [ncols/columns.to_f, nrows/rows.to_f].max
+      scale = [ncols.to_f/columns.to_f, nrows.to_f/rows.to_f].max
       return if scale = 1.0
 
       img.combine_options do |c|
