@@ -17,7 +17,6 @@ Gem::Specification.new do |gem|
 
   gem.add_dependency("url")
   gem.add_dependency("aws-sdk")
-  gem.add_dependency('rmagick')
   gem.add_dependency('mini_magick')
 
   gem.add_development_dependency("rspec", ["~> 2.8.0"])

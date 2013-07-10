@@ -1,6 +1,5 @@
 require "darkroom/version"
 require 'aws-sdk'
-require 'RMagick'
 require 'mini_magick'
 require 'open-uri'
 require 'url'
