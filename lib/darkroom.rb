@@ -8,7 +8,7 @@ module Darkroom
   module Plugins; end
 end
 
-%w{s3 sizing image sizing}.each do |f|
+%w{s3 sizing image thumbnail}.each do |f|
   require File.dirname(__FILE__)<<'/darkroom/'<<f
 end
 
