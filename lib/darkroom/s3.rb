@@ -94,7 +94,9 @@ module Darkroom::Plugins::S3
     end
 
     def download_original_image
-      new_active_image(Magick::Image.from_blob(URL.new(s3_url(style: 'original')).get).first)
+      img = Image.new(s3_url(style: 'original'))
+      img.file_info = original_meta
+      img
     end
 
     def s3_url opts={}
@@ -123,11 +125,7 @@ module Darkroom::Plugins::S3
 
       reduced_redundancy = name.to_s != 'original'
 
-      if image_attributes[:format]
-        img.format = image_attributes[:format]
-      end
-
-      s3 = obj.write data: img.to_blob,
+      s3 = obj.write file: img.path,
                       acl: self.class.s3_acl,
        reduced_redundancy: reduced_redundancy,
              content_type: img.mime_type

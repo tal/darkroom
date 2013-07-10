@@ -54,7 +54,7 @@ module Darkroom
       end
 
       def cleanup_active_images
-        active_images.each {|img| img.destroy!}
+
       end
 
       private
@@ -66,29 +66,8 @@ module Darkroom
           end
           img = original_image
         elsif style = image_attributes[:styles][name]
-          if m = style.match(/(\d+)x(\d+)[#s]/)
-            x = m[1].to_i
-            y = m[2].to_i
-            img = original_image.resize_to_fill(x, y)
-          else
-            img = original_image.change_geometry(style) do |cols, rows, _img|
-              _img.resize(cols, rows)
-            end
-          end
-
-          img.format = image_attributes[:format] if image_attributes[:format]
+          img = original_image.new_thumbnail style, image_attributes[:format]
         end
-
-        new_active_image(img)
-      end
-
-      def new_active_image img
-        active_images << img
-        img
-      end
-
-      def active_images
-        @active_images ||=[]
       end
     end
 
