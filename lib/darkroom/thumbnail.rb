@@ -44,23 +44,13 @@ module Darkroom
       @processed = true
     end
 
-    # def resize_to_fill!(ncols, nrows=nil, gravity=CenterGravity)
-    #     nrows ||= ncols
-    #     if ncols != columns || nrows != rows
-    #         scale = [ncols/columns.to_f, nrows/rows.to_f].max
-    #         resize!(scale*columns+0.5, scale*rows+0.5)
-    #     end
-    #     crop!(gravity, ncols, nrows, true) if ncols != columns || nrows != rows
-    #     self
-    # end
-
     def resize_to_fill ncols, nrows=nil
       nrows ||= ncols
       scale = [ncols.to_f/columns.to_f, nrows.to_f/rows.to_f].max
       return if scale == 1.0
 
       img.combine_options do |c|
-        c.thumbnail "#{scale*th.columns+0.5}x#{scale*th.rows+0.5}"
+        c.thumbnail "#{scale*columns+0.5}x#{scale*rows+0.5}"
         c.gravity "center"
         c.crop "#{ncols}x#{nrows}+0+0"
       end
