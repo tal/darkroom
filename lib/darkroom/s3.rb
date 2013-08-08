@@ -130,6 +130,7 @@ module Darkroom::Plugins::S3
       s3 = obj.write file: img.path,
                       acl: acl,
        reduced_redundancy: reduced_redundancy,
+                 encoding: "BINARY",
              content_type: img.mime_type
 
       self.upload_info[name]||={}
