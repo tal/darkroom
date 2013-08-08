@@ -137,6 +137,9 @@ module Darkroom::Plugins::S3
       self.upload_info[name]['uploaded_at'] = Time.now
 
       s3
+    ensure
+      # Ensure the HTTP pool is emptied after each write.
+      AWS.config.http_handler.pool.empty!
     end
   end
 
