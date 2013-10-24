@@ -62,7 +62,7 @@ module Darkroom::Plugins::S3
     def original_image
       return @original_image if @original_image
 
-      @original_image = if upload_info['original'].andand['uploaded_at']
+      @original_image = if upload_info['original'] && upload_info['original']['uploaded_at']
         download_original_image
       end
     end
@@ -71,7 +71,7 @@ module Darkroom::Plugins::S3
       all_styles = ['original']+image_attributes[:styles].keys
 
       all_styles.select do |style|
-        !upload_info[style].andand['uploaded_at']
+        !(upload_info[style] && upload_info[style]['uploaded_at'])
       end
     end
 
@@ -111,7 +111,7 @@ module Darkroom::Plugins::S3
     end
 
     def uploaded? style
-      !!upload_info[style].andand['uploaded_at']
+      !!(upload_info[style] && upload_info[style]['uploaded_at'])
     end
 
     private
