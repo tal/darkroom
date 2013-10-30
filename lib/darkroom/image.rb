@@ -47,6 +47,14 @@ module Darkroom
       img.to_blob
     end
 
+    def blob_sha
+      Digest::SHA2.hexdigest(to_blob)
+    end
+
+    def sha
+      file_info['sha'] ||= blob_sha
+    end
+
     def new_thumbnail *args
       t = Thumbnail.new(self,*args)
       @thumbnails << t
@@ -84,6 +92,9 @@ module Darkroom
       @info ||= begin
         raw = img["%m|%w|%h|%[EXIF:DateTimeOriginal]"]
         @format,@width,@height,shot_at = raw.split('|')
+        unless @width && @height
+          raise ImageDataError, raw
+        end
         @width = @width.to_i
         @height = @height.to_i
         @format = @format.downcase
@@ -95,7 +106,8 @@ module Darkroom
         'geometry_y' => @height,
            'shot_at' => @shot_at,
               'name' => @filename,
-              'size' => filesize
+              'size' => filesize,
+               'sha' => blob_sha
         }
       end
     end
@@ -124,5 +136,7 @@ module Darkroom
     def inspect
       "#<#{inspect_opts.join(' ')}>"
     end
+
+    class ImageDataError < StandardError; end
   end
 end

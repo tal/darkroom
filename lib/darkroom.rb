@@ -3,6 +3,7 @@ require 'aws-sdk'
 require 'mini_magick'
 require 'open-uri'
 require 'url'
+require 'logger'
 
 module Darkroom
   module Plugins; end
@@ -14,8 +15,35 @@ end
 
 module Darkroom
 
+  def self.logger
+    @logger ||= begin
+      if defined?(Rails)
+        Rails.logger
+      else
+        Logger.new(STDOUT)
+      end
+    end
+  end
+
+  def self.logger=lg
+    @logger = lg
+  end
+
   module ClassMethods
     attr_reader :image_attributes
+
+    def def_original_meta *args
+      args.each do |arg|
+        key = case arg
+        when :width
+          define_method(arg) {original_meta['geometry_x'].to_i}
+        when :height
+          define_method(arg) {original_meta['geometry_y'].to_i}
+        else
+          define_method(arg) {original_meta[arg.to_s]}
+        end
+      end
+    end
   end
 
   module InstanceMethods

@@ -123,6 +123,8 @@ module Darkroom::Plugins::S3
     def upload_image name, img
       obj = s3_objs[name]
 
+      Darkroom.logger.info("Uploading style #{name} to #{obj.key}")
+
       reduced_redundancy = name.to_s != 'original'
 
       acl = self.class.s3_acl

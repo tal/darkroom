@@ -62,7 +62,7 @@ module Darkroom
       def style_image name
         if name == 'original'
           unless @original_image
-            Rails.logger.error("re-uploading original image") # TODO: add specific info
+            Darkroom.logger.error("re-uploading original image") # TODO: add specific info
           end
           original_image
         elsif style = image_attributes[:styles][name]
